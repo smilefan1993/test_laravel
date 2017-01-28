@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::group(['namespace' => 'Test', 'prefix' => 'test'], function($r){
+    $r->get('/',['uses' => 'TestController@index', 'as' => 'test.index']);
+    $r->get('/create',['uses' => 'TestController@testForm', 'as' => 'test.form']);
+    $r->post('/create',['uses' => 'TestController@create', 'as' => 'test.create']);
+});
