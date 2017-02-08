@@ -21,8 +21,18 @@ class TestController extends Controller
 
     public function create(CreateRequest $request)
     {
-        dump($request);
-        die();
-        return view('test.index');
+        $test = Test::create($request->all());
+
+        return redirect()->route('test.fillTest',[$test])->withInput();
+    }
+
+    public function fillTest(Test $test)
+    {
+        return view('test.newtestdata',compact('test'));
+    }
+
+    public function createQuestion(QuestionRequest $request)
+    {
+
     }
 }

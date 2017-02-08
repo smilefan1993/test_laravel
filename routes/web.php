@@ -21,5 +21,7 @@ Route::get('/home', 'HomeController@index');
 Route::group(['namespace' => 'Test', 'prefix' => 'test'], function($r){
     $r->get('/',['uses' => 'TestController@index', 'as' => 'test.index']);
     $r->get('/create',['uses' => 'TestController@testForm', 'as' => 'test.form']);
-    $r->post('/create',['uses' => 'TestController@create', 'as' => 'test.create']);
+    $r->put('/create',['uses' => 'TestController@create', 'as' => 'test.create']);
+    $r->get('/create/{test}',['uses' => 'TestController@fillTest', 'as' => 'test.fillTest']);
+    $r->put('/create/{test}',['uses' => 'TestController@fillTest', 'as' => 'test.fillTest']);
 });

@@ -24,8 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return ['name' => 'required|unique:Tests',
-            'category' => 'required',
-            'sub_category' => 'required',
+            'category_id' => 'required',
+            'sub_category_id' => 'required',
             'success_weight' => 'required|digits_between:0,100',
             'max_test_time' => 'required|numeric',
         ];

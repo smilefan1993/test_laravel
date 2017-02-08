@@ -13,25 +13,31 @@ class Question extends Migration
      */
     public function up()
     {
-        Schema::create('categorys', function(Blueprint $table) {
+        Schema::create('categories', function(Blueprint $table) {
             $table->increments('id');
             $table->string('category_name',50);
             $table->timestamps();
         });
 
-        Schema::create('sub_categorys',function(Blueprint $table){
+        Schema::create('sub_categories',function(Blueprint $table){
             $table->increments('id');
             $table->string('sub_category_name',50);
             $table->timestamps();
 
         });
 
-        Schema::create('categorys_sub_categorys',function(Blueprint $table){
+        Schema::create('question_types', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('type_name');
+            $table->timestamps();
+        });
+
+        Schema::create('categories_sub_categories',function(Blueprint $table){
             $table->integer('category_id')->unsigned()->index();
-            $table->foreign('category_id')->on('categorys')->references('id');
+            $table->foreign('category_id')->on('categories')->references('id');
 
             $table->integer('sub_category_id')->unsigned()->index();
-            $table->foreign('sub_category_id')->on('sub_categorys')->references('id');
+            $table->foreign('sub_category_id')->on('sub_categories')->references('id');
             $table->timestamps();
         });
 
@@ -39,6 +45,7 @@ class Question extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('question_text');
+            $table->integer('question_type_id')->unsigned();
             $table->string('picture');
             $table->integer('time')->default(30);
             $table->integer('question_value')->default(50);
@@ -48,12 +55,17 @@ class Question extends Migration
             $table->timestamps();
 
             $table->foreign('sub_category_id')
-                ->on('sub_categorys')
+                ->on('sub_categories')
                 ->references('id')
                 ->onDelete('cascade');
 
             $table->foreign('category_id')
-                ->on('sub_categorys')
+                ->on('sub_categories')
+                ->references('id')
+                ->onDelete('cascade');
+
+            $table->foreign('question_type_id')
+                ->on('question_types')
                 ->references('id')
                 ->onDelete('cascade');
         });
@@ -67,13 +79,15 @@ class Question extends Migration
      */
     public function down()
     {
-        Schema::table('categorys_sub_categorys', function(Blueprint $table){
-            $table->dropForeign('categorys_sub_categorys_category_id_foreign');
-            $table->dropForeign('categorys_sub_categorys_sub_category_id_foreign');
+        Schema::table('categories_sub_categories', function(Blueprint $table){
+            $table->dropForeign('categories_sub_categories_category_id_foreign');
+            $table->dropForeign('categories_sub_categories_sub_category_id_foreign');
         });
-        Schema::dropIfExists('categorys_sub_categorys');
+
+        Schema::dropIfExists('categories_sub_categories');
         Schema::dropIfExists('questions');
-        Schema::dropIfExists('categorys');
-        Schema::dropIfExists('sub_categorys');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('sub_categories');
+        Schema::dropIfExists('question_types');
     }
 }

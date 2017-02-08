@@ -21,19 +21,19 @@ class Test extends Migration
             $table->boolean('final_verdict_showing')->default('1');
             $table->integer('success_weight');
             $table->boolean('skip_question')->default('1');
-            $table->time('max_test_time');
+            $table->integer('max_test_time');
             $table->integer('sub_category_id')->unsigned();
             $table->integer('category_id')->unsigned();
 
             $table->timestamps();
 
             $table->foreign('sub_category_id')
-                ->on('sub_categorys')
+                ->on('sub_categories')
                 ->references('id')
                 ->onDelete('cascade');
 
             $table->foreign('category_id')
-                ->on('sub_categorys')
+                ->on('sub_categories')
                 ->references('id')
                 ->onDelete('cascade');
         });
